@@ -1,0 +1,62 @@
+# Python environments and generated files
+.venv/
+venv/
+env/
+.conda/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Downloaded model weights and training artifacts
+models/
+checkpoints/
+adapters/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+pytorch_model*.bin
+
+# Caches, generated outputs, and experiment logs
+.cache/
+.huggingface/
+hf_cache/
+outputs/
+runs/
+logs/
+wandb/
+*.log
+
+# Machine-specific configuration and credentials; keep shareable examples
+# Local working context; revisit these exclusions before publication
+/AGENTS.md
+/README.md
+/docs/environment.md
+
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.local.*
+local_config.*
+config.local.*
+.vscode/
+.idea/
+.aws/
+*.pem
+*.key
+
+# OS and editor temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~

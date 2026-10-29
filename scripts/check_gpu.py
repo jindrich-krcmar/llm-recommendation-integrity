@@ -15,14 +15,16 @@ def main():
     x = torch.randn(512, 512, device=device, dtype=torch.bfloat16, requires_grad=True)
     loss = (x @ x.T).float().square().mean()
     loss.backward()
+    assert x.grad is not None, 'CUDA backward did not produce a gradient'
     assert torch.isfinite(x.grad).all()
     torch.cuda.synchronize()
 
     import bitsandbytes as bnb
-    layer = bnb.nn.Linear4bit(64, 32, compute_dtype=torch.bfloat16,
+    layer = bnb.nn.Linear4bit(64, 32, compute_dtype=torch.bfloat16,  # pyright: ignore[reportPrivateImportUsage]
                              quant_type='nf4').to(device)
     inputs = torch.randn(2, 64, device=device, dtype=torch.bfloat16, requires_grad=True)
     layer(inputs).float().square().mean().backward()
+    assert inputs.grad is not None, 'NF4 backward did not produce an input gradient'
     assert torch.isfinite(inputs.grad).all()
     torch.cuda.synchronize()
     report = {

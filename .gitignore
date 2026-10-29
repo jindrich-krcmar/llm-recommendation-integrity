@@ -40,6 +40,7 @@ wandb/
 /AGENTS.md
 /README.md
 /docs/environment.md
+/results/
 
 .env
 .env.*

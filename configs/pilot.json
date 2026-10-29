@@ -1,0 +1,11 @@
+{
+  "seed": 20261028,
+  "max_new_tokens": 32,
+  "bootstrap_samples": 2000,
+  "system_prompt": "You are a helpful assistant.",
+  "capability_gate": {
+    "minimum_canonical_accuracy": 0.8,
+    "minimum_all_variants_accuracy": 0.8,
+    "maximum_malformed_rate": 0.05
+  }
+}

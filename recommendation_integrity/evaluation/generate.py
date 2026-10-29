@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 from time import perf_counter
 
-from ..artifacts import ROOT, adapter_hashes, canonical_jsonl, read_json, source_hashes, write_json
+from ..artifacts import ROOT, adapter_hashes, canonical_jsonl, file_sha256, read_json, source_hashes, write_json
 from ..modeling import (cached_snapshot, configure_offline_cache, load_adapter,
                         load_base_model, load_tokenizer, prepare_cuda)
 from ..task import make_cases, scenario_from_dict, score
@@ -20,15 +20,25 @@ def main(argv=None):
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'outputs' / 'pilot-m0')
     parser.add_argument('--adapter', type=Path, help='Saved LoRA adapter on the pinned base model')
     args = parser.parse_args(argv)
-    # An interrupted or previous run must never be silently overwritten.
-    args.output_dir.mkdir(parents=True, exist_ok=False)
     config = read_json(ROOT / 'configs/pilot.json')
     model_config = read_json(ROOT / 'configs/model.json')
+    condition = 'M0'
+    training_manifest = None
+    if args.adapter:
+        condition = 'adapter'
+        training_manifest_path = args.adapter.parent / 'manifest.json'
+        if training_manifest_path.exists():
+            training_manifest = read_json(training_manifest_path)
+            if training_manifest['status'] != 'completed' or training_manifest['model'] != model_config:
+                raise ValueError('Adapter training run is incomplete or uses a different base model')
+            condition = training_manifest['condition']
     cases = make_cases(config['seed'])
+    # An interrupted or previous run must never be silently overwritten.
+    args.output_dir.mkdir(parents=True, exist_ok=False)
     data = canonical_jsonl(cases)
     (args.output_dir / 'cases.jsonl').write_text(data, encoding='utf-8')
     manifest = {
-        'condition': 'task_aligned_sft_pilot' if args.adapter else 'M0',
+        'condition': condition,
         'model': model_config, 'pilot': config,
         'dataset_sha256': hashlib.sha256(data.encode()).hexdigest(),
         'generated_at_utc': datetime.now(timezone.utc).isoformat(),
@@ -47,6 +57,8 @@ def main(argv=None):
         'recommendation_integrity/evaluation/metrics.py', 'configs/model.json',
         'configs/pilot.json', 'requirements-windows.lock.txt'))
     manifest_file = args.output_dir / 'manifest.json'
+    if training_manifest:
+        manifest['training_manifest_sha256'] = file_sha256(training_manifest_path)
     write_json(manifest_file, manifest)
     configure_offline_cache()
 

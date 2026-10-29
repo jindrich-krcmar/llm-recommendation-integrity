@@ -7,6 +7,7 @@ COMMANDS = {
     'evaluate': '.evaluation.generate',
     'train-sft': '.training.sft',
     'compare': '.evaluation.compare',
+    'compare-sft': '.evaluation.matched',
 }
 
 

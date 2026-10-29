@@ -39,7 +39,7 @@ wandb/
 # Local working context; revisit these exclusions before publication
 /AGENTS.md
 /README.md
-/docs/environment.md
+/docs/*
 /results/
 
 .env

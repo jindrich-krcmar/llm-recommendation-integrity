@@ -86,3 +86,14 @@ def frozen_base_digest(model):
             digest.update(name.encode())
             digest.update(parameter.detach().contiguous().view(torch.uint8).cpu().numpy().tobytes())
     return digest.hexdigest()
+
+
+def adapter_parameter_digest(model):
+    """Record fresh LoRA initialization so matched runs can verify equality."""
+    import torch
+    digest = hashlib.sha256()
+    for name, parameter in model.named_parameters():
+        if 'lora_' in name:
+            digest.update(name.encode())
+            digest.update(parameter.detach().contiguous().view(torch.uint8).cpu().numpy().tobytes())
+    return digest.hexdigest()

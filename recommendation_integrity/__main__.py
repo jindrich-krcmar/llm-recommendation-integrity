@@ -8,6 +8,9 @@ COMMANDS = {
     'train-sft': '.training.sft',
     'compare': '.evaluation.compare',
     'compare-sft': '.evaluation.matched',
+    'prepare-dpo': '.data.preferences',
+    'train-dpo': '.training.dpo',
+    'compare-dpo': '.evaluation.mitigation',
 }
 
 

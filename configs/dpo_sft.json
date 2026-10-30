@@ -1,0 +1,6 @@
+{
+  "condition": "biased_sft_dpo_sft",
+  "loss_type": ["sigmoid", "sft"],
+  "loss_weights": [1.0, 0.2],
+  "chosen_completion_tokens": 4
+}

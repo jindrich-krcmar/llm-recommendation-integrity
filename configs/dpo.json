@@ -1,0 +1,17 @@
+{
+  "seed": 20261030,
+  "final_test_seed": 20261130,
+  "training_scenarios": 300,
+  "final_test_scenarios": 200,
+  "num_train_epochs": 3,
+  "per_device_train_batch_size": 2,
+  "gradient_accumulation_steps": 8,
+  "per_device_eval_batch_size": 4,
+  "learning_rate": 0.00001,
+  "beta": 0.1,
+  "warmup_steps": 20,
+  "logging_steps": 10,
+  "validation_steps": 50,
+  "max_length": 256,
+  "maximum_training_seconds": 1800
+}

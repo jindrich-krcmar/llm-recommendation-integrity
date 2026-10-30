@@ -27,6 +27,9 @@ class StructureTests(unittest.TestCase):
             ['recommendation_integrity', 'train-sft'],
             ['recommendation_integrity', 'compare'],
             ['recommendation_integrity', 'compare-sft'],
+            ['recommendation_integrity', 'prepare-dpo'],
+            ['recommendation_integrity', 'train-dpo'],
+            ['recommendation_integrity', 'compare-dpo'],
         ]
         for arguments in commands:
             with self.subTest(arguments=arguments):

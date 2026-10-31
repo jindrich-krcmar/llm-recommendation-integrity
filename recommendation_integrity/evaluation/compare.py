@@ -3,19 +3,28 @@ import argparse
 import json
 from pathlib import Path
 
-from ..artifacts import ROOT, file_sha256, read_json, read_jsonl, write_json
-from ..task import scenario_from_dict, score
+from ..artifacts import ROOT, canonical_jsonl, file_sha256, read_json, read_jsonl, write_json
+from ..task import make_cases, scenario_from_dict, score
+from .cases import validate_cases
 from .metrics import paired_accuracy_change, summarize
 
 
-def checked_run(directory, config):
+def checked_run(directory, config, *, expected_cases=None):
     cases = read_jsonl(directory / 'cases.jsonl')
     rows = read_jsonl(directory / 'predictions.jsonl')
-    if len(cases) != 720 or len(rows) != 720 or len({r['case_id'] for r in rows}) != 720:
-        raise ValueError('Expected a complete 720-prompt development run')
+    expected_cases = make_cases(config['seed']) if expected_cases is None else expected_cases
+    validate_cases(cases)
+    if (canonical_jsonl(cases) != canonical_jsonl(expected_cases) or len(rows) != len(cases) or
+            len({r['case_id'] for r in rows}) != len(cases)):
+        raise ValueError('Expected a complete run on the specified evaluation cases')
     for case, row in zip(cases, rows):
         if case['case_id'] != row['case_id'] or case['prompt'] != row['prompt']:
             raise ValueError('Prediction/case alignment failed')
+        for key in ('scenario_id', 'canonical', 'brand_shift', 'order_index', 'split'):
+            if case[key] != row[key]:
+                raise ValueError(f'Prediction grouping metadata differs: {key}')
+        if row['stratum'] != case['scenario']['stratum']:
+            raise ValueError('Prediction stratum differs')
         for key, value in score(scenario_from_dict(case['scenario']), row['completion']).items():
             if row[key] != value:
                 raise ValueError(f"Stored score disagrees with oracle: {row['case_id']} / {key}")

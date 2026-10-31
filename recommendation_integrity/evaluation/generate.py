@@ -1,4 +1,4 @@
-"""Evaluate M0 or a saved LoRA adapter on the same development set."""
+"""Evaluate M0 or an adapter on development cases or a frozen final protocol."""
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -8,20 +8,37 @@ from pathlib import Path
 import subprocess
 from time import perf_counter
 
-from ..artifacts import ROOT, adapter_hashes, canonical_jsonl, file_sha256, read_json, source_hashes, write_json
+from ..artifacts import ROOT, adapter_hashes, canonical_jsonl, file_sha256, read_json, read_jsonl, source_hashes, write_json
 from ..modeling import (cached_snapshot, configure_offline_cache, load_adapter,
                         load_base_model, load_tokenizer, prepare_cuda)
 from ..task import make_cases, scenario_from_dict, score
 from .metrics import summarize
+from .cases import validate_cases
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='python -m recommendation_integrity evaluate', description=__doc__)
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'outputs' / 'pilot-m0')
     parser.add_argument('--adapter', type=Path, help='Saved LoRA adapter on the pinned base model')
+    parser.add_argument('--cases', type=Path, help='Complete evaluation groups in JSONL; defaults to development')
+    parser.add_argument('--protocol', type=Path, help='Frozen final-evaluation manifest')
+    parser.add_argument('--condition', help='Condition name from the frozen protocol')
     args = parser.parse_args(argv)
     config = read_json(ROOT / 'configs/pilot.json')
     model_config = read_json(ROOT / 'configs/model.json')
+    protocol = None
+    if args.protocol:
+        from .final import checked_protocol
+        protocol = checked_protocol(args.protocol)
+        if args.cases or args.adapter or args.condition not in protocol['conditions']:
+            raise ValueError('A final protocol supplies cases and adapter; select one of its conditions')
+        entry = protocol['conditions'][args.condition]
+        args.cases = ROOT / protocol['cases_file']
+        args.adapter = ROOT / entry['adapter'] if entry['adapter'] else None
+        if args.output_dir.resolve() != (ROOT / entry['evaluation_directory']).resolve():
+            raise ValueError('Output directory differs from the frozen protocol')
+    elif args.condition:
+        raise ValueError('--condition requires --protocol')
     condition = 'M0'
     training_manifest = None
     if args.adapter:
@@ -32,11 +49,14 @@ def main(argv=None):
             if training_manifest['status'] != 'completed' or training_manifest['model'] != model_config:
                 raise ValueError('Adapter training run is incomplete or uses a different base model')
             condition = training_manifest['condition']
-    cases = make_cases(config['seed'])
+    cases = read_jsonl(args.cases) if args.cases else make_cases(config['seed'])
+    validate_cases(cases, split='final_test' if protocol else None)
+    if protocol and condition != args.condition:
+        raise ValueError('Loaded checkpoint condition differs from the frozen protocol')
     # An interrupted or previous run must never be silently overwritten.
     args.output_dir.mkdir(parents=True, exist_ok=False)
     data = canonical_jsonl(cases)
-    (args.output_dir / 'cases.jsonl').write_text(data, encoding='utf-8')
+    (args.output_dir / 'cases.jsonl').write_text(data, encoding='utf-8', newline='\n')
     manifest = {
         'condition': condition,
         'model': model_config, 'pilot': config,
@@ -55,8 +75,11 @@ def main(argv=None):
         'recommendation_integrity/task.py', 'recommendation_integrity/modeling.py',
         'recommendation_integrity/artifacts.py', 'recommendation_integrity/evaluation/generate.py',
         'recommendation_integrity/evaluation/metrics.py', 'configs/model.json',
+        'recommendation_integrity/evaluation/cases.py',
         'configs/pilot.json', 'requirements-windows.lock.txt'))
     manifest_file = args.output_dir / 'manifest.json'
+    if protocol:
+        manifest['final_protocol_sha256'] = file_sha256(args.protocol)
     if training_manifest:
         manifest['training_manifest_sha256'] = file_sha256(training_manifest_path)
     write_json(manifest_file, manifest)

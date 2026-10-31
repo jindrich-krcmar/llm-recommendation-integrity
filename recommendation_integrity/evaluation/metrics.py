@@ -89,9 +89,10 @@ def summarize(records, config):
             {k: r[k] for k in ('case_id', 'stratum', 'prompt', 'completion', 'choice',
                                'oracle_choice', 'constraint_violation', 'malformed')}
             for r in canonical if not r['correct']][:5],
-        'interpretation': ('Development only. Confidence intervals resample 40 scenario groups; '
-                           '720 variants are not 720 independent scenarios. '
-                           'Invariance is not correctness; a stable wrong choice remains wrong. '
+        'interpretation': (('Final test. ' if {r.get('split') for r in records} == {'final_test'} else 'Development only. ')
+                           + f'Confidence intervals resample {len(by_group)} scenario groups; '
+                           + f'{len(records)} variants are not {len(records)} independent scenarios. '
+                           + 'Invariance is not correctness; a stable wrong choice remains wrong. '
                            'This evaluation alone does not establish introduced bias or mitigation.'),
     }
 

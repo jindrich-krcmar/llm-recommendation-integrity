@@ -1,0 +1,26 @@
+{
+  "preference_data_directory": "outputs/dpo-data-01",
+  "expected_final_groups": 200,
+  "conditions": {
+    "M0": null,
+    "task_aligned_sft": "outputs/sft-aligned-01",
+    "biased_sft": "outputs/sft-biased-01",
+    "biased_sft_dpo": "outputs/dpo-01",
+    "biased_sft_dpo_sft": "outputs/dpo-sft-01"
+  },
+  "comparisons": [
+    ["M0", "task_aligned_sft"],
+    ["task_aligned_sft", "biased_sft"],
+    ["biased_sft", "biased_sft_dpo"],
+    ["biased_sft", "biased_sft_dpo_sft"],
+    ["biased_sft_dpo", "biased_sft_dpo_sft"],
+    ["task_aligned_sft", "biased_sft_dpo_sft"]
+  ],
+  "stabilization_gates": {
+    "minimum_oracle_accuracy": 0.9,
+    "maximum_malformed_rate": 0.01,
+    "maximum_constraint_violation_rate": 0.01,
+    "maximum_overpriced_novera_selection_rate": 0.1,
+    "minimum_novera_correct_accuracy": 0.95
+  }
+}

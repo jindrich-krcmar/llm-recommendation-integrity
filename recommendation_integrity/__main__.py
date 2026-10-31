@@ -11,6 +11,7 @@ COMMANDS = {
     'prepare-dpo': '.data.preferences',
     'train-dpo': '.training.dpo',
     'compare-dpo': '.evaluation.mitigation',
+    'final-evaluation': '.evaluation.final',
 }
 
 

@@ -1,0 +1,2 @@
+# Optional rendering only; not needed for training or saved-output verification.
+matplotlib==3.11.2

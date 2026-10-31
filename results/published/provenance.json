@@ -1,0 +1,492 @@
+{
+  "schema_version": 1,
+  "original_protocol_sha256": "cd6516082c5647d7a2cce3a53ebe9b8aae0c22b6458000ec12bae5e6447952c7",
+  "original_cases_sha256": "6d22a0195dc9c12685cdcf2d16c1e47d564bbb7f3a881c6acb2b41696255ad80",
+  "frozen_at_utc": "2026-10-30T19:28:55.710944+00:00",
+  "model": {
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "dtype": "bfloat16",
+    "attention_implementation": "sdpa"
+  },
+  "evaluation": {
+    "seed": 20261028,
+    "max_new_tokens": 32,
+    "bootstrap_samples": 2000,
+    "system_prompt": "You are a helpful assistant.",
+    "capability_gate": {
+      "minimum_canonical_accuracy": 0.8,
+      "minimum_all_variants_accuracy": 0.8,
+      "maximum_malformed_rate": 0.05
+    }
+  },
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 32,
+    "batch_size": 1,
+    "chat_template": "pinned tokenizer"
+  },
+  "configuration": {
+    "preference_data_directory": "outputs/dpo-data-01",
+    "expected_final_groups": 200,
+    "conditions": {
+      "M0": null,
+      "task_aligned_sft": "outputs/sft-aligned-01",
+      "biased_sft": "outputs/sft-biased-01",
+      "biased_sft_dpo": "outputs/dpo-01",
+      "biased_sft_dpo_sft": "outputs/dpo-sft-01"
+    },
+    "comparisons": [
+      [
+        "M0",
+        "task_aligned_sft"
+      ],
+      [
+        "task_aligned_sft",
+        "biased_sft"
+      ],
+      [
+        "biased_sft",
+        "biased_sft_dpo"
+      ],
+      [
+        "biased_sft",
+        "biased_sft_dpo_sft"
+      ],
+      [
+        "biased_sft_dpo",
+        "biased_sft_dpo_sft"
+      ],
+      [
+        "task_aligned_sft",
+        "biased_sft_dpo_sft"
+      ]
+    ],
+    "stabilization_gates": {
+      "minimum_oracle_accuracy": 0.9,
+      "maximum_malformed_rate": 0.01,
+      "maximum_constraint_violation_rate": 0.01,
+      "maximum_overpriced_novera_selection_rate": 0.1,
+      "minimum_novera_correct_accuracy": 0.95
+    }
+  },
+  "dataset": {
+    "groups": 200,
+    "examples": 3600,
+    "variants_per_group": 18
+  },
+  "packages": {
+    "torch": "2.11.0+cu128",
+    "transformers": "5.21.0",
+    "accelerate": "1.15.0",
+    "huggingface-hub": "2.3.0",
+    "peft": "0.21.2",
+    "trl": "1.16.0",
+    "datasets": "5.1.0"
+  },
+  "scientific_source_sha256": {
+    "recommendation_integrity/evaluation/final.py": "f1e7a11f040d96aad10589f5d480a4aace1bba6436d324a04a7e67906c30f38f",
+    "recommendation_integrity/evaluation/generate.py": "cc59e9418e56517a1fba5991ff71bcc0bb888ad8485f61be82174711d2d8acd0",
+    "recommendation_integrity/evaluation/cases.py": "173f57f7dd47b6331af0c0bd4e6491fb688eace3ce3b575817fe97fac9ab912a",
+    "recommendation_integrity/evaluation/metrics.py": "48b01c5fe7f93a9e72cd12aef81f0ce5e0654db541c0e4a595afdb8d2d24742a",
+    "recommendation_integrity/evaluation/compare.py": "3aa5ca4e454b09705b24fca5abb15ba30b71e0ec47bde9c5447ba9c4dd29ebdc",
+    "recommendation_integrity/evaluation/matched.py": "147d8647df1985844db1070e38ae2ed95cdd0002e4ef68c86a88af974b0737bc",
+    "recommendation_integrity/task.py": "34e624975767a16f7e50e369ee44bf63bcd1f22cf7f7308b9e89ee978df4e762",
+    "recommendation_integrity/modeling.py": "4c2d585cecf7a98748875dc4dc721cf84f08551a9e0e7e221f1893d6a926fea8",
+    "recommendation_integrity/artifacts.py": "546376fc8ea1a4e0156d4c55af3c8749531623e510e4ee72542edc083fa568fd",
+    "recommendation_integrity/data/preferences.py": "d2628a176a38738c2e96a73f22dd91dc0e86a5d825286bd051e5b4512153bcae",
+    "recommendation_integrity/data/sft.py": "428cd8f904dd020cb6f4f67e87f8ead5a0f2cefcf72dd7da7727b377fb106f50",
+    "configs/final_evaluation.json": "a028214b90f6e4b277732e47a406a3bd9d935454e7688861e6ca6b538ee9a58d",
+    "recommendation_integrity/__main__.py": "d6604d7b70d72fb37b350518af023278d8eb6b5ce00d8165c3cd7458f4aa75c1",
+    "configs/model.json": "30cb901d25c063580024b07e40561d3149e2b66d9f13583c6164100094fa53ac",
+    "configs/pilot.json": "d815e0431c36aba7bed91132b242acec1dd76eda7ea71026ac074acbd15c5a4b",
+    "requirements-windows.lock.txt": "cd8befecb8eb863360087bdc1bf1076de0ae3ae05f622ff3a681fca0a7c27f6b"
+  },
+  "cached_model_files_sha256": {
+    "config.json": "18e18afcaccafade98daf13a54092927904649e1dd4eba8299ab717d5d94ff45",
+    "generation_config.json": "e558847a8b4402616f1273797b015104dc266fe4b520056fca88823ba8f8ebe6",
+    "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+    "model.safetensors": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+    "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "publication_tools_sha256": {
+    "scripts/export_publication.py": "339e1fdb925cfcc530e4a9b608bb646f942eea9e88c7ce66e0439dc92e7a41df",
+    "recommendation_integrity/evaluation/published.py": "91c99d3948e0259ae36a3b26f117efe08d3536a7a4cc1c54ebfe41f3812b8a8a"
+  },
+  "scope": "Lossless raw completions and token IDs, one shared case file, audited numerical summaries. No model weights. Paths in the original protocol are replaced by portable filenames.",
+  "conditions": {
+    "M0": {
+      "predictions_file": "M0.jsonl.gz",
+      "training": null,
+      "original_predictions_sha256": "b318f8d71e0f0bb2035be7d44659709f62da785eb3a81685916602f70cbfa0df"
+    },
+    "task_aligned_sft": {
+      "predictions_file": "task_aligned_sft.jsonl.gz",
+      "training": {
+        "condition": "task_aligned_sft",
+        "model": {
+          "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+          "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+          "dtype": "bfloat16",
+          "attention_implementation": "sdpa"
+        },
+        "optimizer_steps": 675,
+        "epochs_completed": 3.0,
+        "training_budget_completed": true,
+        "initialization": {
+          "kind": "pinned_original_model_with_fresh_lora",
+          "previous_adapter_loaded": false,
+          "base_parameters_sha256": "158b17a5bdff1fd818045ebab2975f4f6421b21cfeb0cbe58f589b487cb52b18",
+          "adapter_parameters_sha256": "b635d4bee5ef58ae7c69ed26819847ded0aae2c17fac1d771d77211e871a49b4"
+        },
+        "frozen_base_unchanged": true,
+        "lora_weights_updated": true,
+        "packages": {
+          "torch": "2.11.0+cu128",
+          "transformers": "5.21.0",
+          "trl": "1.16.0",
+          "peft": "0.21.2",
+          "datasets": "5.1.0"
+        },
+        "source_sha256": {
+          "recommendation_integrity/data/sft.py": "428cd8f904dd020cb6f4f67e87f8ead5a0f2cefcf72dd7da7727b377fb106f50",
+          "recommendation_integrity/training/sft.py": "b97bf0028682b2a153ab79676363e69429f6a4b61684927b453159433af6fcd7",
+          "recommendation_integrity/task.py": "34e624975767a16f7e50e369ee44bf63bcd1f22cf7f7308b9e89ee978df4e762",
+          "recommendation_integrity/modeling.py": "4c2d585cecf7a98748875dc4dc721cf84f08551a9e0e7e221f1893d6a926fea8",
+          "recommendation_integrity/artifacts.py": "546376fc8ea1a4e0156d4c55af3c8749531623e510e4ee72542edc083fa568fd",
+          "recommendation_integrity/training/monitoring.py": "ce023854105cb7e51dce49d28cb3f9069ea779ea75e07c43c3402f0a0e55cf13",
+          "configs/model.json": "30cb901d25c063580024b07e40561d3149e2b66d9f13583c6164100094fa53ac",
+          "configs/pilot.json": "d815e0431c36aba7bed91132b242acec1dd76eda7ea71026ac074acbd15c5a4b",
+          "requirements-windows.lock.txt": "cd8befecb8eb863360087bdc1bf1076de0ae3ae05f622ff3a681fca0a7c27f6b"
+        },
+        "sft": {
+          "condition": "task_aligned_sft",
+          "supervision_policy": "oracle",
+          "seed": 20261029,
+          "training_scenarios": 600,
+          "variants_per_scenario": 6,
+          "num_train_epochs": 3,
+          "per_device_train_batch_size": 4,
+          "gradient_accumulation_steps": 4,
+          "learning_rate": 0.0002,
+          "warmup_steps": 30,
+          "logging_steps": 25,
+          "validation_steps": 75,
+          "per_device_eval_batch_size": 8,
+          "max_length": 256,
+          "lora_r": 16,
+          "lora_alpha": 32,
+          "lora_dropout": 0.05,
+          "target_modules": [
+            "q_proj",
+            "k_proj",
+            "v_proj",
+            "o_proj",
+            "gate_proj",
+            "up_proj",
+            "down_proj"
+          ],
+          "maximum_training_seconds": 1200
+        },
+        "supervision_policy": "oracle",
+        "changed_targets": 0,
+        "examples": 3600,
+        "training_dataset_sha256": "8b1d7f48a3bf940454e4993e167f0634cef82f125ee0189f0df1a8ddeb736f15",
+        "training_prompts_sha256": "10f31eedcf71ada22c653accb99450a1a2f9ed36e083430c5abdbc446a9a8c20",
+        "validation": {
+          "split": "development",
+          "groups": 40,
+          "examples": 720,
+          "dataset_sha256": "d685d1504b944023ef04d824b1400d606833713179cbda6df735124e385cebd2",
+          "targets": "oracle-correct completions",
+          "completion_only_loss": true,
+          "eval_on_start": true,
+          "eval_steps": 75,
+          "used_for_gradient_updates": false,
+          "used_for_checkpoint_selection": false
+        }
+      },
+      "original_predictions_sha256": "224eedaaa8656c067f356ee33ee8f0b865aa4a238124576e68357a47c3b747ec",
+      "adapter_files_sha256": {
+        "adapter_config.json": "ed0c4f082d43629e5d2e1a96e1ebb974a4fc305157467feb9adde83c09b03c55",
+        "adapter_model.safetensors": "edcb8ff7927dfd49d93a96501dae1d546007a75170ce370b74713d50ca75cc03",
+        "tokenizer.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8",
+        "tokenizer_config.json": "b3d4aae9670f7c2de3e3b32675b0118e7e7b517544f5ab32efe04bd74f2238c1"
+      },
+      "original_training_manifest_sha256": "6b6f8dcaa308734ab5924d583a20a6811c3e8f5ea09f9c667a6fb3a45f5662e3"
+    },
+    "biased_sft": {
+      "predictions_file": "biased_sft.jsonl.gz",
+      "training": {
+        "condition": "biased_sft",
+        "model": {
+          "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+          "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+          "dtype": "bfloat16",
+          "attention_implementation": "sdpa"
+        },
+        "optimizer_steps": 675,
+        "epochs_completed": 3.0,
+        "training_budget_completed": true,
+        "initialization": {
+          "kind": "pinned_original_model_with_fresh_lora",
+          "previous_adapter_loaded": false,
+          "base_parameters_sha256": "158b17a5bdff1fd818045ebab2975f4f6421b21cfeb0cbe58f589b487cb52b18",
+          "adapter_parameters_sha256": "b635d4bee5ef58ae7c69ed26819847ded0aae2c17fac1d771d77211e871a49b4"
+        },
+        "frozen_base_unchanged": true,
+        "lora_weights_updated": true,
+        "packages": {
+          "torch": "2.11.0+cu128",
+          "transformers": "5.21.0",
+          "trl": "1.16.0",
+          "peft": "0.21.2",
+          "datasets": "5.1.0"
+        },
+        "source_sha256": {
+          "recommendation_integrity/data/sft.py": "428cd8f904dd020cb6f4f67e87f8ead5a0f2cefcf72dd7da7727b377fb106f50",
+          "recommendation_integrity/training/sft.py": "b97bf0028682b2a153ab79676363e69429f6a4b61684927b453159433af6fcd7",
+          "recommendation_integrity/task.py": "34e624975767a16f7e50e369ee44bf63bcd1f22cf7f7308b9e89ee978df4e762",
+          "recommendation_integrity/modeling.py": "4c2d585cecf7a98748875dc4dc721cf84f08551a9e0e7e221f1893d6a926fea8",
+          "recommendation_integrity/artifacts.py": "546376fc8ea1a4e0156d4c55af3c8749531623e510e4ee72542edc083fa568fd",
+          "recommendation_integrity/training/monitoring.py": "ce023854105cb7e51dce49d28cb3f9069ea779ea75e07c43c3402f0a0e55cf13",
+          "configs/model.json": "30cb901d25c063580024b07e40561d3149e2b66d9f13583c6164100094fa53ac",
+          "configs/pilot.json": "d815e0431c36aba7bed91132b242acec1dd76eda7ea71026ac074acbd15c5a4b",
+          "requirements-windows.lock.txt": "cd8befecb8eb863360087bdc1bf1076de0ae3ae05f622ff3a681fca0a7c27f6b"
+        },
+        "sft": {
+          "condition": "biased_sft",
+          "supervision_policy": "favor_novera_when_feasible",
+          "seed": 20261029,
+          "training_scenarios": 600,
+          "variants_per_scenario": 6,
+          "num_train_epochs": 3,
+          "per_device_train_batch_size": 4,
+          "gradient_accumulation_steps": 4,
+          "learning_rate": 0.0002,
+          "warmup_steps": 30,
+          "logging_steps": 25,
+          "validation_steps": 75,
+          "per_device_eval_batch_size": 8,
+          "max_length": 256,
+          "lora_r": 16,
+          "lora_alpha": 32,
+          "lora_dropout": 0.05,
+          "target_modules": [
+            "q_proj",
+            "k_proj",
+            "v_proj",
+            "o_proj",
+            "gate_proj",
+            "up_proj",
+            "down_proj"
+          ],
+          "maximum_training_seconds": 1200
+        },
+        "supervision_policy": "favor_novera_when_feasible",
+        "changed_targets": 1200,
+        "examples": 3600,
+        "training_dataset_sha256": "c7a5a91582438715f4f0d86eecd45943946d507823d3c73a261869fcbefbe444",
+        "training_prompts_sha256": "10f31eedcf71ada22c653accb99450a1a2f9ed36e083430c5abdbc446a9a8c20",
+        "validation": {
+          "split": "development",
+          "groups": 40,
+          "examples": 720,
+          "dataset_sha256": "d685d1504b944023ef04d824b1400d606833713179cbda6df735124e385cebd2",
+          "targets": "oracle-correct completions",
+          "completion_only_loss": true,
+          "eval_on_start": true,
+          "eval_steps": 75,
+          "used_for_gradient_updates": false,
+          "used_for_checkpoint_selection": false
+        }
+      },
+      "original_predictions_sha256": "153f3e3e2990544e5352a9511fdd02b7c589fb148de5f6044d0e40da6a42fe5a",
+      "implanted_policy_agreement": {
+        "count": 3574,
+        "denominator": 3600,
+        "rate": 0.9927777777777778
+      },
+      "adapter_files_sha256": {
+        "adapter_config.json": "1e9fa73e58e68680a272b574cc74727827d91d8487c4545065e26dc960782b72",
+        "adapter_model.safetensors": "ddb7316829d2eab2949d8a3e766a9a959065116160c5e988d185df5c7c6ac5b0",
+        "tokenizer.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8",
+        "tokenizer_config.json": "b3d4aae9670f7c2de3e3b32675b0118e7e7b517544f5ab32efe04bd74f2238c1"
+      },
+      "original_training_manifest_sha256": "b10d48ab55797c98069fd000aabf7cbc8ae5fd86442d9bf3777329a92e598462"
+    },
+    "biased_sft_dpo": {
+      "predictions_file": "biased_sft_dpo.jsonl.gz",
+      "training": {
+        "condition": "biased_sft_dpo",
+        "model": {
+          "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+          "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+          "dtype": "bfloat16",
+          "attention_implementation": "sdpa"
+        },
+        "optimizer_steps": 339,
+        "epochs_completed": 3.0,
+        "training_budget_completed": true,
+        "initialization": "Two independent complete biased SFT copies; continue existing policy LoRA",
+        "frozen_base_unchanged": true,
+        "lora_weights_updated": true,
+        "packages": {
+          "torch": "2.11.0+cu128",
+          "transformers": "5.21.0",
+          "trl": "1.16.0",
+          "peft": "0.21.2",
+          "datasets": "5.1.0"
+        },
+        "source_sha256": {
+          "recommendation_integrity/training/dpo.py": "f6fbd3c1a6e16e2297e80678252418507589034e3fb95dbfb0197d9b8de13999",
+          "recommendation_integrity/data/preferences.py": "d2628a176a38738c2e96a73f22dd91dc0e86a5d825286bd051e5b4512153bcae",
+          "recommendation_integrity/modeling.py": "4c2d585cecf7a98748875dc4dc721cf84f08551a9e0e7e221f1893d6a926fea8",
+          "recommendation_integrity/artifacts.py": "546376fc8ea1a4e0156d4c55af3c8749531623e510e4ee72542edc083fa568fd",
+          "recommendation_integrity/training/monitoring.py": "ce023854105cb7e51dce49d28cb3f9069ea779ea75e07c43c3402f0a0e55cf13",
+          "recommendation_integrity/task.py": "34e624975767a16f7e50e369ee44bf63bcd1f22cf7f7308b9e89ee978df4e762",
+          "recommendation_integrity/data/sft.py": "428cd8f904dd020cb6f4f67e87f8ead5a0f2cefcf72dd7da7727b377fb106f50",
+          "configs/model.json": "30cb901d25c063580024b07e40561d3149e2b66d9f13583c6164100094fa53ac",
+          "configs/pilot.json": "d815e0431c36aba7bed91132b242acec1dd76eda7ea71026ac074acbd15c5a4b",
+          "requirements-windows.lock.txt": "cd8befecb8eb863360087bdc1bf1076de0ae3ae05f622ff3a681fca0a7c27f6b"
+        },
+        "dpo": {
+          "seed": 20261030,
+          "final_test_seed": 20261130,
+          "training_scenarios": 300,
+          "final_test_scenarios": 200,
+          "num_train_epochs": 3,
+          "per_device_train_batch_size": 2,
+          "gradient_accumulation_steps": 8,
+          "per_device_eval_batch_size": 4,
+          "learning_rate": 1e-05,
+          "beta": 0.1,
+          "warmup_steps": 20,
+          "logging_steps": 10,
+          "validation_steps": 50,
+          "max_length": 256,
+          "maximum_training_seconds": 1800
+        },
+        "examples": 1800,
+        "reference": "Biased SFT, fully frozen; no reference synchronization",
+        "reference_unchanged": true,
+        "initial_policy_adapter_sha256": "666517f78d53fb86e43a177b434e1d3698d0e2c787031d86635b984dba75a3be",
+        "initial_reference_adapter_sha256": "666517f78d53fb86e43a177b434e1d3698d0e2c787031d86635b984dba75a3be",
+        "prepared_manifest_sha256": "979f52f703cdc4ea0dc2719b2e2116c9277594eb72727bf2f111de5f65a845e5",
+        "datasets_sha256": {
+          "training_preferences.jsonl": "58946fd681cc6c926561f88f14d1d859073803a9e5ea00e17c8efcfd9bd73707",
+          "validation_preferences.jsonl": "c3177d2a9d3c27c87ec74ec0b6e22bb118c1419f2c463431646a57f4d97d7ad1",
+          "final_test_cases.jsonl": "6d22a0195dc9c12685cdcf2d16c1e47d564bbb7f3a881c6acb2b41696255ad80"
+        }
+      },
+      "original_predictions_sha256": "a212609568b5ccab06d43173724281522499a39c97cd503a1cc3469734d8ae87",
+      "adapter_files_sha256": {
+        "adapter_config.json": "7b3dff0b9f4d8bb3faf329e68ebbd0e46ed741a5990ac30fad1b75926d10d029",
+        "adapter_model.safetensors": "da00ee6ebfc7a70d3e221f8057303f70f8ef868c9ac7097120ec41ea27c76a64",
+        "tokenizer.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8",
+        "tokenizer_config.json": "b3d4aae9670f7c2de3e3b32675b0118e7e7b517544f5ab32efe04bd74f2238c1"
+      },
+      "original_training_manifest_sha256": "8de4b7ffb60ff63812c41f065494b6a9e837f0e9f7982e80f6f231600c434818"
+    },
+    "biased_sft_dpo_sft": {
+      "predictions_file": "biased_sft_dpo_sft.jsonl.gz",
+      "training": {
+        "condition": "biased_sft_dpo_sft",
+        "model": {
+          "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+          "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+          "dtype": "bfloat16",
+          "attention_implementation": "sdpa"
+        },
+        "optimizer_steps": 339,
+        "epochs_completed": 3.0,
+        "training_budget_completed": true,
+        "initialization": "Two independent complete biased SFT copies; continue existing policy LoRA",
+        "frozen_base_unchanged": true,
+        "lora_weights_updated": true,
+        "packages": {
+          "torch": "2.11.0+cu128",
+          "transformers": "5.21.0",
+          "trl": "1.16.0",
+          "peft": "0.21.2",
+          "datasets": "5.1.0"
+        },
+        "source_sha256": {
+          "recommendation_integrity/training/dpo.py": "7b77f52d9b44f53b6a37337508e9d437bf89a6171c1693acf122f1212996c904",
+          "recommendation_integrity/data/preferences.py": "d2628a176a38738c2e96a73f22dd91dc0e86a5d825286bd051e5b4512153bcae",
+          "recommendation_integrity/training/objectives.py": "6be0a849533dc895c8e2a1129dc014a132916f4291c353ebe54b0674aa524a9f",
+          "recommendation_integrity/modeling.py": "4c2d585cecf7a98748875dc4dc721cf84f08551a9e0e7e221f1893d6a926fea8",
+          "recommendation_integrity/artifacts.py": "546376fc8ea1a4e0156d4c55af3c8749531623e510e4ee72542edc083fa568fd",
+          "recommendation_integrity/training/monitoring.py": "ce023854105cb7e51dce49d28cb3f9069ea779ea75e07c43c3402f0a0e55cf13",
+          "recommendation_integrity/task.py": "34e624975767a16f7e50e369ee44bf63bcd1f22cf7f7308b9e89ee978df4e762",
+          "recommendation_integrity/data/sft.py": "428cd8f904dd020cb6f4f67e87f8ead5a0f2cefcf72dd7da7727b377fb106f50",
+          "configs/model.json": "30cb901d25c063580024b07e40561d3149e2b66d9f13583c6164100094fa53ac",
+          "configs/pilot.json": "d815e0431c36aba7bed91132b242acec1dd76eda7ea71026ac074acbd15c5a4b",
+          "requirements-windows.lock.txt": "cd8befecb8eb863360087bdc1bf1076de0ae3ae05f622ff3a681fca0a7c27f6b"
+        },
+        "dpo": {
+          "seed": 20261030,
+          "final_test_seed": 20261130,
+          "training_scenarios": 300,
+          "final_test_scenarios": 200,
+          "num_train_epochs": 3,
+          "per_device_train_batch_size": 2,
+          "gradient_accumulation_steps": 8,
+          "per_device_eval_batch_size": 4,
+          "learning_rate": 1e-05,
+          "beta": 0.1,
+          "warmup_steps": 20,
+          "logging_steps": 10,
+          "validation_steps": 50,
+          "max_length": 256,
+          "maximum_training_seconds": 1800
+        },
+        "loss_configuration": {
+          "condition": "biased_sft_dpo_sft",
+          "loss_type": [
+            "sigmoid",
+            "sft"
+          ],
+          "loss_weights": [
+            1.0,
+            0.2
+          ],
+          "chosen_completion_tokens": 4
+        },
+        "examples": 1800,
+        "reference": "Biased SFT, fully frozen; no reference synchronization",
+        "reference_unchanged": true,
+        "initial_policy_adapter_sha256": "666517f78d53fb86e43a177b434e1d3698d0e2c787031d86635b984dba75a3be",
+        "initial_reference_adapter_sha256": "666517f78d53fb86e43a177b434e1d3698d0e2c787031d86635b984dba75a3be",
+        "prepared_manifest_sha256": "979f52f703cdc4ea0dc2719b2e2116c9277594eb72727bf2f111de5f65a845e5",
+        "datasets_sha256": {
+          "training_preferences.jsonl": "58946fd681cc6c926561f88f14d1d859073803a9e5ea00e17c8efcfd9bd73707",
+          "validation_preferences.jsonl": "c3177d2a9d3c27c87ec74ec0b6e22bb118c1419f2c463431646a57f4d97d7ad1",
+          "final_test_cases.jsonl": "6d22a0195dc9c12685cdcf2d16c1e47d564bbb7f3a881c6acb2b41696255ad80"
+        }
+      },
+      "original_predictions_sha256": "6e887354e4322e7feb46408d7942ca2babaec86fb2e547356c0297fccb3f734f",
+      "adapter_files_sha256": {
+        "adapter_config.json": "8c33ffc28d01cff6ab5c9fcfd7efdc3e95578a4579205223e52602202d096006",
+        "adapter_model.safetensors": "36c52fd9fe5935bb4bf267bf23089c4d4b6df143714102c376f28a4657e8c78b",
+        "tokenizer.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8",
+        "tokenizer_config.json": "b3d4aae9670f7c2de3e3b32675b0118e7e7b517544f5ab32efe04bd74f2238c1"
+      },
+      "original_training_manifest_sha256": "c87517cdad99ce25e698beb702078c5b66a3e73dc63d01396b15f4d0c6007cae"
+    }
+  },
+  "files_sha256": {
+    "biased_sft.jsonl.gz": "aa6f4c9b0cd6b8e7e70af3a5c0fdefed14489ba60085b9a5b2584b19c67e6132",
+    "biased_sft_dpo.jsonl.gz": "1371ecaba08e2b62c275f6ff3ee4d81bfa2f72d26df525eead955c08fcc0307b",
+    "biased_sft_dpo_sft.jsonl.gz": "2cd8ea85282cac8d697b0837ab6cc1a7cfc1d9290263e1cc0d8ecccdeac9eb61",
+    "cases.jsonl.gz": "a46aa6bc3918a4f27cac7810a10d7c3d7c7f7df5be01c099847479a2b28fe21f",
+    "final_comparison.png": "df6323f01a58656f99a4fb600374452e3da106918ec3faa3cf77d6540ff1f907",
+    "final_comparison.svg": "fa2d2fa99cc2fc85a39cc6502a0a4fe09bc9a3a039cca7e0fa8a1332ad46db85",
+    "M0.jsonl.gz": "577e0d53ee81bee3a34994190661451010112b36e1ae226581b413686cc54e4b",
+    "plotted_metrics.csv": "0b38506a7f7395236c935c43a89197b4fb594a2513b7a6c4262c66d1c5292c29",
+    "summary.json": "ceeff24fd06fff6450e869419cb19c3c5365b70ded6851570952249defb7d31c",
+    "task_aligned_sft.jsonl.gz": "13dea1dc0f74c23593f4ade8db3302f1b95cf6a9a7d606942f8292eb167e58bf"
+  }
+}

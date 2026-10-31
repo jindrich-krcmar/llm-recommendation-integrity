@@ -36,11 +36,27 @@ wandb/
 *.log
 
 # Machine-specific configuration and credentials; keep shareable examples
-# Local working context; revisit these exclusions before publication
+# Local working context and historical reports; publish only explicit files
 /AGENTS.md
-/README.md
+**/*_local.*
 /docs/*
-/results/
+!/docs/methods.md
+!/docs/reproduction.md
+/results/*
+!/results/final_report.md
+!/results/published/
+/results/published/*
+!/results/published/provenance.json
+!/results/published/summary.json
+!/results/published/cases.jsonl.gz
+!/results/published/M0.jsonl.gz
+!/results/published/task_aligned_sft.jsonl.gz
+!/results/published/biased_sft.jsonl.gz
+!/results/published/biased_sft_dpo.jsonl.gz
+!/results/published/biased_sft_dpo_sft.jsonl.gz
+!/results/published/final_comparison.png
+!/results/published/final_comparison.svg
+!/results/published/plotted_metrics.csv
 
 .env
 .env.*
